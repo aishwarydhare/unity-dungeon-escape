@@ -7,7 +7,8 @@ public class Attack : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(canDamage) {
+        if (canDamage)
+        {
             Debug.Log(string.Format("Hit: {0}", other.name));
             IDamageable hit = other.GetComponent<IDamageable>();
             hit?.Damage(1);
@@ -16,7 +17,8 @@ public class Attack : MonoBehaviour
         }
     }
 
-    IEnumerator CanDamageCooldown(){
+    IEnumerator CanDamageCooldown()
+    {
         yield return new WaitForSeconds(0.5f);
         canDamage = true;
         StopCoroutine(CanDamageCooldown());

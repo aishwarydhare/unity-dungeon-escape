@@ -73,7 +73,7 @@ public abstract class Enemy : MonoBehaviour
         StopCoroutine(AttackAndWait());
     }
 
-    private void CombatAndAttackCheck()
+    protected virtual void CombatAndAttackCheck()
     {
         inCombat = false;
         shouldAttack = false;

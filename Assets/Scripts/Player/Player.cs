@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
+    public int Health { get; set; }
 
+    [SerializeField]
+    protected int health;
     [SerializeField]
     private float jumpForce = 5f;
     [SerializeField]
@@ -20,7 +23,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rigidbody2D;
     private bool flipped = false;
 
-    void Start()
+    private void Init()
     {
         _rigidbody2D = GetComponent<Rigidbody2D>();
 
@@ -31,6 +34,13 @@ public class Player : MonoBehaviour
         swordArc = transform.GetChild(1).gameObject;
         swordAnimator = swordArc.GetComponent<Animator>();
         swordSpriteRenderer = swordArc.GetComponentInChildren<SpriteRenderer>();
+
+        Health = health;
+    }
+
+    void Start()
+    {
+        Init();
     }
 
     void Update()
@@ -115,4 +125,12 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void Damage(int attackPower)
+    {
+        Health -= attackPower;
+        if (Health <= 0)
+        {
+            Debug.Log("gameover");
+        }
+    }
 }
