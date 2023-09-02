@@ -8,13 +8,10 @@ public class Skeleton : Enemy, IDamageable
         Health = base.health;
     }
 
-    protected override void Attack()
-    {
-        base.Attack();
-    }
-
     public void Damage(int attackPower)
     {
+        if (hit || dead) return;
+
         Health -= attackPower;
         if (Health <= 0)
         {

@@ -31,8 +31,8 @@ public abstract class Enemy : MonoBehaviour
     protected SpriteRenderer enemyRenderer;
     private bool shouldMoveToB = false;
     private bool waiting = false;
-    private bool hit = false;
-    private bool dead = false;
+    protected bool hit = false;
+    protected bool dead = false;
 
     public virtual void Init()
     {
@@ -51,7 +51,7 @@ public abstract class Enemy : MonoBehaviour
     {
         CombatAndAttackCheck();
         if (!hit && !dead && !shouldAttack) MoveAround();
-        else if (shouldAttack && !attackBreak) Attack();
+        else if (shouldAttack && !attackBreak && !hit && !dead) Attack();
     }
 
     protected virtual void Attack()
@@ -147,12 +147,12 @@ public abstract class Enemy : MonoBehaviour
         StopCoroutine(IdleWaitThenContinue());
         waiting = false;
     }
-
+   
     protected IEnumerator HitWaitThenContinue()
     {
         enemyAnimator.SetTrigger("Got_Hit");
         hit = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         hit = false;
         enemyAnimator.SetTrigger("Idle");

@@ -18,12 +18,11 @@ public class Spider : Enemy, IDamageable
 
     protected override void Update()
     {
-        // do nothing
-        CombatAndAttackCheck();
-        if (shouldAttack && !attackBreak) Attack();
+        SpiderCombatAndAttackCheck();
+        if (shouldAttack && !attackBreak && !hit && !dead) Attack();
     }
 
-    protected override void CombatAndAttackCheck()
+    private void SpiderCombatAndAttackCheck()
     {
         inCombat = false;
         shouldAttack = false;
@@ -35,14 +34,10 @@ public class Spider : Enemy, IDamageable
         }
     }
 
-
-    protected override void Attack()
-    {
-        base.Attack();
-    }
-
     public void Damage(int attackPower)
     {
+        if (hit || dead) return;
+
         Health -= attackPower;
         if (Health <= 0)
         {
@@ -57,13 +52,14 @@ public class Spider : Enemy, IDamageable
     public void FireAcidProjectile()
     {
         acidObj = Instantiate(acidPrefab, transform.position, Quaternion.identity);
-        StartCoroutine(WaitAndDestroyPrefab());
+        acidObj.transform.SetParent(gameObject.transform);
+        StartCoroutine(WaitAndDestroyAcidPrefab());
     }
 
-    private IEnumerator WaitAndDestroyPrefab()
+    private IEnumerator WaitAndDestroyAcidPrefab()
     {
         yield return new WaitForSeconds(5);
         Destroy(acidObj);
-        StopCoroutine(WaitAndDestroyPrefab());
+        StopCoroutine(WaitAndDestroyAcidPrefab());
     }
 }

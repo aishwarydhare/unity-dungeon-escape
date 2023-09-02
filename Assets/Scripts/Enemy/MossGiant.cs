@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class MossGiant : Enemy, IDamageable
 {
     public int Health { get; set; }
@@ -10,13 +8,10 @@ public class MossGiant : Enemy, IDamageable
         Health = base.health;
     }
 
-    protected override void Attack()
-    {
-        base.Attack();
-    }
-
     public void Damage(int attackPower)
     {
+        if (hit || dead) return;
+
         Health -= attackPower;
         if (Health <= 0)
         {
